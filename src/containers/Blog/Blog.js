@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import { NavLink, Route, Switch } from "react-router-dom";
 import "./Blog.css";
 import Posts from "./Posts/Posts";
-import NewPost from "./NewPost/NewPost";
+import asyncComponent from "../../common/asyncComponent";
+
+const LazyNewPost = asyncComponent(() => {
+  return import("./NewPost/NewPost");
+});
 
 class Blog extends Component {
   state = {
@@ -36,13 +40,13 @@ class Blog extends Component {
             </li>
           </ul>
         </header>
+        <Route exact path="/" component={Posts} />
         <Switch>
           {this.state.auth ? (
-            <Route path="/newpost" component={NewPost} />
+            <Route path="/newpost" component={LazyNewPost} />
           ) : null}
-          <Route path="/newpost" component={NewPost} />
-          <Route path="/" component={Posts} />
-          <Route render={() => <h1>Not found</h1>} />
+          <Route path="/newpost" component={LazyNewPost} />
+          {/*<Route render={() => <h1>Not found</h1>} />*/}
           {/*put above line last to handle 404*/}
         </Switch>
       </div>
