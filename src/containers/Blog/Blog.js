@@ -5,6 +5,9 @@ import Posts from "./Posts/Posts";
 import NewPost from "./NewPost/NewPost";
 
 class Blog extends Component {
+  state = {
+    auth: false
+  };
   render() {
     return (
       <div className="Blogs">
@@ -34,8 +37,13 @@ class Blog extends Component {
           </ul>
         </header>
         <Switch>
+          {this.state.auth ? (
+            <Route path="/newpost" component={NewPost} />
+          ) : null}
           <Route path="/newpost" component={NewPost} />
           <Route path="/" component={Posts} />
+          <Route render={() => <h1>Not found</h1>} />
+          {/*put above line last to handle 404*/}
         </Switch>
       </div>
     );
